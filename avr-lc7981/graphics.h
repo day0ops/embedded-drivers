@@ -6,6 +6,9 @@
  * font5x7.h header file comes from Procyon AVRlib.
  */
 
+#ifndef _GRAPHICS_H
+#define _GRAPHICS_H
+
 #include "font5x7.h"
 
 #define FONT_WIDTH	5
@@ -17,3 +20,4 @@ void g_draw_rectangle(unsigned short x, unsigned short y, unsigned short width, 
 void g_draw_char(unsigned short x, unsigned short y, char character);
 void g_draw_string(unsigned short x, unsigned short y, const char *str);
 
+#endif

@@ -13,7 +13,7 @@
  * The hardware port defines can be found in lc7981.h. */
 
 #include "lc7981.h"
-#include "graphics.c"
+#include "graphics.h"
 #include "draw_penguin.c"
 
 /** 

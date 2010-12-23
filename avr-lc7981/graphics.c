@@ -7,6 +7,7 @@
  *
  */
 
+#include "lc7981.h"
 #include "graphics.h"
 
 /**

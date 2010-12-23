@@ -13,6 +13,9 @@
  * the hardware definitions and function prototypes for the graphics lcd 
  * driver. */ 
 
+#ifndef _LC7981_H
+#define _LC7981_H
+
 /* AVR clock speed */
 #define F_CPU	8000000
 
@@ -93,3 +96,4 @@ void lcd_graphics_draw_byte(unsigned char data);
 void lcd_graphics_plot_byte(unsigned short x, unsigned short y, unsigned char data);
 void lcd_graphics_plot_pixel(unsigned short x, unsigned short y, unsigned char state);
 
+#endif

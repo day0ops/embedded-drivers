@@ -1,0 +1,11 @@
+Driver for the Samsung LJ41-00192B 160x80 monochrome graphics lcd with the
+LC7981 LCD controller.
+
+Written by Vanya A. Sergeev - <vsergeev@gmail.com>
+
+font5x7.h header file that contains the font/character set pixels is from
+Procyon AVRlib by Pascal Stang.
+
+March 30, 2007
+	- Initial release. I will try to post up the connections/schematic as
+	  as soon as possible.
