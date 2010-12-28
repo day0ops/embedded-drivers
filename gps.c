@@ -17,7 +17,7 @@ int GPS_NMEA_Checksum(char *nmea_string, int len);
 
 /* Token Parsing Helper Functions */
 char *nextToken(char **data, char *delimeter);
-char ascii2hex(char hexchar);
+int8_t ascii2hex(char hexchar);
 char *returnToken(char *tokenData, int dataLen, int tokenIndex);
 
 /* String Manipulation Helper Functions */
@@ -416,27 +416,15 @@ char *returnToken(char *tokenData, int dataLen, int tokenIndex) {
 
 /* Converts an ASCII Hex character to its numerical value,
  * returns -1 if the conversion was unsuccessful. */
-char ascii2hex(char hexchar) {
-	switch (hexchar) {
-		case '0': return 0x0;
-		case '1': return 0x1;
-		case '2': return 0x2;
-		case '3': return 0x3;
-		case '4': return 0x4;
-		case '5': return 0x5;
-		case '6': return 0x6;
-		case '7': return 0x7;
-		case '8': return 0x8;
-		case '9': return 0x9;
-		case 'A': return 0xA;
-		case 'B': return 0xB;
-		case 'C': return 0xC;
-		case 'D': return 0xD;
-		case 'E': return 0xE;
-		case 'F': return 0xF;
-		default:
-			return -1;
-	}
+int8_t ascii2hex(char hexchar) {
+	if (hexchar >= '0' && hexchar <= '9')
+		return (hexchar-'0');
+	else if (hexchar >= 'a' && hexchar <= 'f')
+		return (hexchar-'a')+10;
+	else if (hexchar >= 'A' && hexchar <= 'F')
+		return (hexchar-'A')+10;
+	else
+		return -1;
 }
 
 /* Some basic string manipulation functions */
