@@ -3,7 +3,7 @@ Vanya A. Sergeev - vsergeev at gmail
 
 sd.c/.h 		- SPI SD card driver
 gps.c/.h		- String manipulation routines to extract GPGGA, GPGLL,
-			  and GPRMC sentences from NMEA data
+			  and GPRMC sentence data from NMEA strings
 debug-printf.c/.h	- Platform independent printf
 
 avr-lc7981/		- LC7981/HD61830 Graphics LCD Driver for AVRs
