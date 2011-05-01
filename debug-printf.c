@@ -9,7 +9,6 @@
 
 #ifdef DEBUG
 
-#define DEBUG_puts		UART0_puts
 #define DEBUG_putc		UART0_putc
 
 int debug_is_num(char c) {
@@ -41,7 +40,7 @@ int debug_printf(char *fmt, ...) {
 
 	va_start(ap, fmt);
 
-	for (; *fmt != 0; fmt++) {
+	for (; *fmt != '\0'; fmt++) {
 		/* If we encounter a format definition */
 		if (*fmt == '%') {
 			/* Flip on the format char flag, reset the padding 
@@ -89,7 +88,7 @@ int debug_printf(char *fmt, ...) {
 
 			/* A character */
 			} else if (*fmt == 'c') {
-				c = va_arg(ap, char);
+				c = (char)va_arg(ap, int);
 				DEBUG_putc(c);
 
 			/* An unsigned integer in base 10 */
@@ -151,7 +150,8 @@ int debug_printf(char *fmt, ...) {
 					numstr[--i] = '0';
 
 				/* Print the numeric string */
-				DEBUG_puts(numstr+i);
+				for (; numstr[i] != '\0'; i++)
+					DEBUG_putc(numstr[i]);
 			}
 			
 			/* Clear the format flag */	
