@@ -7,20 +7,19 @@ font5x7.h header file that contains the font/character set pixels is from
 Procyon AVRlib by Pascal Stang.
 
 Connections on the particular 160x80 LCD I used:
-1	Vcc
-2	Gnd
+1	Gnd
+2	Vcc
 3	to LCD 17
-4	Control Signal
-5	Control Signal
-6	Control Signal
-7-14	 LCD's data pins, connected to PORTB
-15	Gnd
-16	Vcc
+4	Control Signal (RS)
+5	Control Signal (RW)
+6	Control Signal (E)
+7-14	LCD's data pins DB0-DB7, connected to PORTB
+15	Gnd (CS)
+16	Vcc (Reset)
 17	to LCD 3
 18	NC
 19	to backlight inverter out
 20	Gnd
 
 March 30, 2007
-	- Initial release. I will try to post up the connections/schematic as
-	  as soon as possible.
+	- Initial release.
