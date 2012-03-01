@@ -13,7 +13,7 @@ Connections on the particular 160x80 LCD I used:
 4	Control Signal (RS)
 5	Control Signal (RW)
 6	Control Signal (E)
-7-14	LCD's data pins DB0-DB7, connected to PORTB
+7-14	LCD's data pins DB0-DB7, connected to PORTA
 15	Gnd (CS)
 16	Vcc (Reset)
 17	to LCD 3
