@@ -17,7 +17,7 @@
 #define _LC7981_H
 
 /* AVR clock speed */
-#define F_CPU	8000000
+#define F_CPU  16000000
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -27,25 +27,33 @@
 #define LCD_DATA_PORT	PORTA
 #define LCD_DATA_PIN	PINA
 
-#define LCD_CTRL_DDR	DDRB
-#define LCD_CTRL_PORT	PORTB
+#define LCD_CTRL_DDR	DDRC
+#define LCD_CTRL_PORT	PORTC
 
-#define LCD_CTRL_RS	1
-#define LCD_CTRL_RW	2
-#define LCD_CTRL_E	4
+#define LCD_CTRL_RS   1
+#define LCD_CTRL_RW   2
+#define LCD_CTRL_E    3
+#define LCD_CTRL_CS   4
+#define LCD_CTRL_RST  5
 
-#define LCD_WIDTH	160
-#define LCD_HEIGHT	80
+#define LCD_WIDTH   128
+#define LCD_HEIGHT  128
 
 /* Convenient macros to toggle RS, RW, and E control pins */
-#define lcd_rs_high() (LCD_CTRL_PORT |= (1<<LCD_CTRL_RS))
-#define lcd_rs_low() (LCD_CTRL_PORT &= ~(1<<LCD_CTRL_RS))
+#define lcd_rs_high() (LCD_CTRL_PORT |= (1<<LCD_CTRL_RS));
+#define lcd_rs_low() (LCD_CTRL_PORT &= ~(1<<LCD_CTRL_RS));
 
-#define lcd_rw_high() (LCD_CTRL_PORT |= (1<<LCD_CTRL_RW))
-#define lcd_rw_low() (LCD_CTRL_PORT &= ~(1<<LCD_CTRL_RW))
+#define lcd_rw_high() (LCD_CTRL_PORT |= (1<<LCD_CTRL_RW));
+#define lcd_rw_low() (LCD_CTRL_PORT &= ~(1<<LCD_CTRL_RW));
 
-#define lcd_enable_high() (LCD_CTRL_PORT |= (1<<LCD_CTRL_E))
-#define lcd_enable_low() (LCD_CTRL_PORT &= ~(1<<LCD_CTRL_E))
+#define lcd_enable_high() (LCD_CTRL_PORT |= (1<<LCD_CTRL_E));
+#define lcd_enable_low() (LCD_CTRL_PORT &= ~(1<<LCD_CTRL_E));
+
+#define lcd_cs_high() (LCD_CTRL_PORT |= (1<<LCD_CTRL_CS));
+#define lcd_cs_low() (LCD_CTRL_PORT &= ~(1<<LCD_CTRL_CS));
+
+#define lcd_rst_high() (LCD_CTRL_PORT |= (1<<LCD_CTRL_RST))
+#define lcd_rst_low() (LCD_CTRL_PORT &= ~(1<<LCD_CTRL_RST))
 
 /* All possible instructions for the LCD Instruction Register */
 #define	LCD_CMD_MODE			0x00
