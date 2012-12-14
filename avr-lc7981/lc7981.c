@@ -16,16 +16,26 @@
 #include "graphics.h"
 #include "draw_penguin.c"
 
+/**
+ * Delay in milliseconds.
+ * An extension of _delay_ms() so we can delay for longer periods of time.
+ * @param ms Milliseconds to delay.
+ */
+void delay_ms_long(unsigned short ms) {
+	for (; ms > 0; ms--)
+		_delay_ms(1);
+}
+
 /** 
  * Strobes the Enable control line to trigger the lcd to process the
  * transmitted instruction.
  */
-void lcd_strobe_enable(void) {
+/*void lcd_strobe_enable(void) {
 	lcd_enable_high();
 	__asm("nop;"); __asm("nop;"); __asm("nop;");
 	lcd_enable_low();
 	__asm("nop;"); __asm("nop;"); __asm("nop;");
-}
+}*/
 
 /**
  * Waits for the busy flag to clear, which should take
@@ -39,29 +49,6 @@ void lcd_wait_busy(void) {
 }
 
 /**
- * Older implementation of lcd_wait_busy() that checked the busy flag in 
- * hardware. I found that it always hanged after plotting a byte to the screen,
- * so I took up the delay version above.
- *
-void lcd_wait_busy(void) {
-	unsigned char counter = 1;
-	unsigned char data;
-	* Set RW and RS high *
-	lcd_rw_high();
-	lcd_rs_high();
-	__asm("nop;"); __asm("nop;"); __asm("nop;");
-	* Wait until busy flag on last bit of the data port clears. *
-	do {
-		lcd_enable_high();
-		__asm("nop;"); __asm("nop;"); __asm("nop;");
-		data = LCD_DATA_PORT;
-		__asm("nop;"); __asm("nop;"); __asm("nop;");
-		lcd_enable_low();
-		__asm("nop;"); __asm("nop;"); __asm("nop;");
-	} while (data & 0x80);
-}*/
-
-/**
  * Writes a raw instruction to the LCD. 
  * @param command The 4-bit instruction code.
  * @param data The 8-bit paramater/data to the specified instruction.
@@ -70,15 +57,18 @@ void lcd_write_command(unsigned char command, unsigned char data) {
 	/* Wait for the busy flag to clear */
 	lcd_wait_busy();
 	
-	/* Set RW low, RS high to write the instruction command */
+	/* Set Enable low, RW low, RS high to write the instruction command */
+	lcd_enable_low();
 	lcd_rw_low();
 	lcd_rs_high();
+	__asm("nop;"); __asm("nop;"); __asm("nop;");
+	__asm("nop;"); __asm("nop;"); __asm("nop;");
+	__asm("nop;"); __asm("nop;"); __asm("nop;");
 	/* Instruction commands are a maximum of 4 bits long, so 
 	 * just mask off the rest. */
 	LCD_DATA_PORT = (command&0x0F);
+	lcd_enable_high();
 	__asm("nop;"); __asm("nop;"); __asm("nop;");
-	__asm("nop;"); __asm("nop;"); __asm("nop;");
-	lcd_strobe_enable();
 	__asm("nop;"); __asm("nop;"); __asm("nop;");
 	__asm("nop;"); __asm("nop;"); __asm("nop;");
 
@@ -102,12 +92,20 @@ void lcd_graphics_init(void) {
 
 	/* Set the data direction registers apprioriately */
 	LCD_DATA_DDR = 0xFF;
-	LCD_CTRL_DDR |= (1<<LCD_CTRL_RS)|(1<<LCD_CTRL_RW)|(1<<LCD_CTRL_E);
+	LCD_CTRL_DDR |= (1<<LCD_CTRL_RS)|(1<<LCD_CTRL_RW)|(1<<LCD_CTRL_E)|(1<<LCD_CTRL_CS)|(1<<LCD_CTRL_RST);
 
 	/* Assert all control lines to low */
 	lcd_rw_low();
-	lcd_rs_low();
 	lcd_enable_low();
+	
+	/* Reset the LCD controllers */
+  	lcd_rst_low(); 
+        _delay_ms(100); /* Delay for 100 ms */
+        lcd_rst_high();
+        _delay_ms(100); /* Delay for 100 ms */
+  
+        /* Assert all registor control line to low */
+  	lcd_rs_low();
 
 	/* Send mode configuration command with
 	 * Toggle Display On, Master, Mode Graphics bits set */
@@ -209,15 +207,8 @@ void lcd_graphics_clear(void) {
 }
 
 /**
- * Delay in milliseconds.
- * An extension of _delay_ms() so we can delay for longer periods of time.
- * @param ms Milliseconds to delay.
+ * This is the main method
  */
-void delay_ms_long(unsigned short ms) {
-	for (; ms > 0; ms--)
-		_delay_ms(1);
-}
-
 int main(void) {
 	lcd_graphics_init();
 	lcd_graphics_clear();
@@ -231,4 +222,3 @@ int main(void) {
 	while (1) ;
 	return 0;
 }
-
